@@ -95,6 +95,7 @@
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ToDoItem.cs" />
+    <Compile Include="ToDoItemTableHelper.cs" />
     <Compile Include="User.cs" />
     <None Include="project.json" />
   </ItemGroup>

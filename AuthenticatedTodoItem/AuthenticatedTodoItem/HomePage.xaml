@@ -25,7 +25,7 @@
     </RelativePanel>
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton Icon="Add" x:Name="AddButton" Click="AddButton_Click"/>
+            <AppBarButton Icon="Add" x:Name="InsertButton" Click="InsertButton_Click"/>
             <AppBarButton Icon="Delete" x:Name="DeleteButton" IsEnabled="False" Click="DeleteButton_Click"/>
             <AppBarButton Icon="Edit" x:Name="EditButton" IsEnabled="False" Click="EditButton_Click"/>
             <CommandBar.SecondaryCommands>

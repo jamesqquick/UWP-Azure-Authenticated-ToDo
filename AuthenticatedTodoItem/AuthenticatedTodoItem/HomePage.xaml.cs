@@ -69,7 +69,7 @@ namespace AuthenticatedTodoItem
 			}
 		}
 
-		private async void AddButton_Click(object sender, RoutedEventArgs e)
+		private async void InsertButton_Click(object sender, RoutedEventArgs e)
 		{
 			//Create ContentDialog and Add title, ok button, and cancel button
 			var dialog = new ContentDialog();
@@ -96,9 +96,13 @@ namespace AuthenticatedTodoItem
 				else
 				{ 
 					ToDoItem newItem = new ToDoItem { UserId = App.mobileService.CurrentUser.UserId, Text = entryText.Text };
-					InsertItem(newItem);
-					//Update the UI
-					LoadToDoItems();
+					var response = await ToDoItemTableHelper.InsertItemAsync<ToDoItem>(newItem);
+					if (response.Equals("Success"))
+						LoadToDoItems();
+					else
+					{
+						DisplayUserMessage(response);
+					}
 				}	
 			}
 		}
@@ -116,7 +120,14 @@ namespace AuthenticatedTodoItem
 			
 			if(result == ContentDialogResult.Primary)
 			{
-				DeleteItem((ToDoItem)ItemsList.SelectedItem);
+				var response = await ToDoItemTableHelper.DeleteItemAsync<ToDoItem>((ToDoItem)ItemsList.SelectedItem);
+				if (response.Equals("Success"))
+					LoadToDoItems();
+				else
+				{
+					DisplayUserMessage(response);
+				}
+
 			}
 			
 		}
@@ -146,7 +157,13 @@ namespace AuthenticatedTodoItem
 				if (!entryText.Text.Equals(""))
 				{
 					temp.Text = entryText.Text;
-					EditItem(temp);
+					string response =  await ToDoItemTableHelper.EditItemAsync<ToDoItem>(temp);
+					if (response.Equals("Success"))
+						LoadToDoItems();
+					else
+					{
+						DisplayUserMessage(response);
+					}
 				}
 				else
 				{
@@ -154,54 +171,6 @@ namespace AuthenticatedTodoItem
 					DisplayUserMessage("ToDoItem text cannot be empty");
 				}
 				
-			}
-		}
-
-		public async void EditItem(ToDoItem temp)
-		{
-			try
-			{
-				await App.mobileService.GetTable<ToDoItem>().UpdateAsync(temp);
-				Debug.WriteLine("Item Update Success");
-				DisplayUserMessage("Item successfully updated");
-				//Update UI
-				LoadToDoItems();
-			}
-			catch(Exception ex)
-			{
-				Debug.WriteLine("Item Update Error: " + ex.Message);
-			}
-        }
-
-		public async void InsertItem(ToDoItem temp)
-		{
-			try
-			{
-				await App.mobileService.GetTable<ToDoItem>().InsertAsync(temp);
-				Debug.WriteLine("Table Insert Success");
-				DisplayUserMessage("Item Successfully added");
-				//Update the UI
-				LoadToDoItems();
-			}
-			catch (Exception ex)
-			{
-				Debug.WriteLine("Table Insert Error Occurred: " + ex.Message);
-			}
-		}
-
-		public async void DeleteItem(ToDoItem temp)
-		{
-			try
-			{
-				await App.mobileService.GetTable<ToDoItem>().DeleteAsync(temp);
-				Debug.WriteLine("Item Delete Success");
-				DisplayUserMessage("Successfully deleted item.");
-				//Update UI
-				LoadToDoItems();
-			}
-			catch (Exception ex)
-			{
-				Debug.WriteLine("Error Deleting Item: " + ex.Message);
 			}
 		}
 

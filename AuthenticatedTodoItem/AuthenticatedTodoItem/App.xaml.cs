@@ -24,7 +24,7 @@ namespace AuthenticatedTodoItem
 	sealed partial class App : Application
     {
 
-		private const string MOBILE_APP_URL = "***Update with Mobile App Url***";
+		private const string MOBILE_APP_URL = "http://jqqmobileapp.azurewebsites.net";
 		public static MobileServiceClient mobileService = new MobileServiceClient(MOBILE_APP_URL);
 
 		/// <summary>
